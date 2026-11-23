@@ -1,0 +1,59 @@
+# ==============================================================================
+# MEDTRANSFER — Racine .gitignore
+# ==============================================================================
+
+# Variables d'environnement & Secrets
+.env
+.env.local
+.env.production
+.env.*.local
+backend/.env
+frontend/.env
+!.env.example
+
+# Environnements virtuels Python
+backend/venv/
+venv/
+.venv/
+env/
+ENV/
+
+# Bytecode Python & caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Base de données locale de test
+*.sqlite3
+*.db
+medtransfer_dev.sqlite3
+
+# Fichiers statiques collectés
+staticfiles/
+backend/staticfiles/
+
+# Node & Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+dist-ssr/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Éditeurs & Système d'exploitation
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Logs & Fichiers temporaires de navigation
+*.log
+logs/
+chrome_temp_profile_back/

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: medtransfer_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-medtransfer_db}
+      POSTGRES_USER: ${DB_USER:-medtransfer_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-medtransfer_pass2026}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-medtransfer_user} -d ${DB_NAME:-medtransfer_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: medtransfer_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-medtransfer-default-secret-key-medical-platform}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-*}
+      DB_NAME: ${DB_NAME:-medtransfer_db}
+      DB_USER: ${DB_USER:-medtransfer_user}
+      DB_PASSWORD: ${DB_PASSWORD:-medtransfer_pass2026}
+      DB_HOST: db
+      DB_PORT: 5432
+      USE_SQLITE: "False"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python manage.py migrate &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+
+volumes:
+  postgres_data:
+    driver: local
