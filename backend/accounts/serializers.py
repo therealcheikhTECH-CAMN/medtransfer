@@ -701,7 +701,10 @@ class UserAdminManageSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        password = validated_data.pop('password', 'Password123!')
+        password = validated_data.pop('password', None)
+        if not password:
+            import secrets
+            password = secrets.token_urlsafe(16)
         is_actif = validated_data.get('is_actif', True)
         statut_validation = validated_data.pop('statut_validation', 'APPROVED' if is_actif else 'SUSPENDED')
         if not validated_data.get('username') and validated_data.get('email'):

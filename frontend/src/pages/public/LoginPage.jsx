@@ -10,7 +10,6 @@ import {
   ArrowLeft,
   ShieldCheck,
   Stethoscope,
-  UserCircle,
   Building2,
   UserPlus,
   Eye,
@@ -34,7 +33,6 @@ export const LoginPage = () => {
 
   const sessionExpired = new URLSearchParams(location.search).get('session_expired');
   const passwordResetSuccess = new URLSearchParams(location.search).get('reset_success');
-  const showDemoAccounts = import.meta.env.VITE_ENABLE_DEMO_LOGIN !== 'false';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,11 +71,6 @@ export const LoginPage = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickLogin = (eMail, pwd) => {
-    setEmail(eMail);
-    setPassword(pwd);
   };
 
   return (
@@ -275,7 +268,7 @@ export const LoginPage = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="ex: dr.diallo@hrz.sn, directeur@hrz.sn"
+                  placeholder="nom.prenom@etablissement.sn"
                   className="w-full pl-10 pr-4 py-2.5 sm:py-3 bg-[#EAF3FB]/40 hover:bg-[#EAF3FB]/60 focus:bg-white text-sm text-[#123B5D] rounded-xl border border-blue-200/80 focus:border-[#1976D2] focus:ring-3 focus:ring-[#1976D2]/15 outline-none transition-all placeholder:text-slate-400 font-medium"
                   required
                 />
@@ -390,55 +383,6 @@ export const LoginPage = () => {
               </Link>
             </div>
           </div>
-
-          {/* Accès rapide aux comptes de démonstration */}
-          {showDemoAccounts && (
-            <div className="mt-6 pt-4 border-t border-slate-200/80">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2.5 text-center">
-                Accès rapide démo
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('dr.diallo@hrz.sn', 'Password123!')}
-                  className="flex items-center justify-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer"
-                >
-                  <Stethoscope className="w-3 h-3 shrink-0" />
-                  <span className="truncate">Médecin</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('directeur@hrz.sn', 'Password123!')}
-                  className="flex items-center justify-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors cursor-pointer"
-                >
-                  <Building2 className="w-3 h-3 shrink-0" />
-                  <span className="truncate">Directeur</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('fatou.diop@hrz.sn', 'Password123!')}
-                  className="flex items-center justify-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors cursor-pointer"
-                >
-                  <UserCircle className="w-3 h-3 shrink-0" />
-                  <span className="truncate">Agent</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('admin@medtransfer.sn', 'Password123!')}
-                  className="flex items-center justify-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold text-purple-700 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors cursor-pointer"
-                >
-                  <ShieldCheck className="w-3 h-3 shrink-0" />
-                  <span className="truncate">Admin</span>
-                </button>
-              </div>
-              <p className="text-[10px] text-center text-slate-400 mt-2">
-                Mot de passe test : <code className="font-mono font-semibold text-slate-600">Password123!</code>
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </div>
